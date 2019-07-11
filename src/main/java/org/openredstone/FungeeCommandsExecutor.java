@@ -8,8 +8,8 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageListener {
 
-    public static String channel = "FunCommands";
-    public static String subChannel = "Dispatcher";
+    public static String channel = "fun:commands";
+    public static String subChannel = "dispatcher";
 
     @Override
     public void onEnable() {
@@ -20,20 +20,19 @@ public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageL
             return;
         }
 
-        getServer().getMessenger().registerIncomingPluginChannel( this, "my:channel", this ); // we register the incoming channel
-        // you can register outgoing channel if you want to send messages to the proxy
-        // getServer().getMessenger().registerOutgoingPluginChannel( this, "my:channel" );
-        getLogger().info("<pluginName> driver enabled successfully.");
+        getServer().getMessenger().registerIncomingPluginChannel( this, channel, this ); // we register the incoming channel
+        getLogger().info("Dispatcher enabled successfully.");
     }
 
     private void checkIfBungee() {
 
-        if (getServer().spigot().getConfig().getBoolean("settings.bungeecord")) {
+        if (!getServer().spigot().getConfig().getBoolean("settings.bungeecord")) {
             getLogger().severe("This server is not BungeeCord.");
             getLogger().severe("If the server is already hooked to BungeeCord, please enable it into your spigot.yml aswell.");
             getLogger().severe("Plugin disabled!");
             getServer().getPluginManager().disablePlugin(this);
         }
+
     }
 
     @Override
@@ -51,7 +50,7 @@ public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageL
 
         String data = in.readUTF();
 
-        getServer().broadcastMessage(data);
+        getServer().dispatchCommand(getServer().getConsoleSender(), data);
 
     }
 }
