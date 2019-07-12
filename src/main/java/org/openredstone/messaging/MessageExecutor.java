@@ -41,6 +41,6 @@ public class MessageExecutor {
             throw new Exception("Player not found.");
         }
 
-        player.getInventory().addItem(new ItemStack(Material.valueOf(message.getArguments().get(0))));
+        player.getInventory().addItem(new ItemStack(Material.valueOf(message.getArguments()[0])));
     }
 }

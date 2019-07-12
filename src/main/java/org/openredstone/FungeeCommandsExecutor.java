@@ -59,7 +59,7 @@ public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageL
             Message message = new Message(data);
             MessageExecutor.execute(message);
         } catch (Exception e) {
-            getLogger().warning(e.getMessage());
+            getLogger().warning(e.toString());
         }
 
     }
