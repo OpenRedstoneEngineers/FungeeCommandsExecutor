@@ -10,7 +10,7 @@ public class KillExecutor implements Executor {
     public void execute(Message message) throws Exception {
         Player player = FungeeCommandsExecutor.plugin.getServer().getPlayer(message.getUuid());
 
-        if (player.equals(null)) {
+        if (player == null) {
             throw new Exception("Player not found.");
         }
 
