@@ -27,7 +27,8 @@ public class MessageExecutor {
             throw new Exception("Player not found.");
         }
 
-        FungeeCommandsExecutor.plugin.getServer().dispatchCommand(FungeeCommandsExecutor.plugin.getServer().getConsoleSender(),"kill " + player.getName());
+        player.setHealth(0);
+
     }
 
     public static void executeRaw(Message message) {
