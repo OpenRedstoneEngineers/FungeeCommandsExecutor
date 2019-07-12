@@ -5,15 +5,20 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.openredstone.messaging.Message;
+import org.openredstone.messaging.MessageExecutor;
 
 public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageListener {
 
     public static String channel = "fun:commands";
     public static String subChannel = "dispatcher";
+    public static JavaPlugin plugin;
 
     @Override
     public void onEnable() {
         checkIfBungee();
+
+        this.plugin = this;
 
         if ( !getServer().getPluginManager().isPluginEnabled(this) )
         {
@@ -50,7 +55,12 @@ public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageL
 
         String data = in.readUTF();
 
-        getServer().dispatchCommand(getServer().getConsoleSender(), data);
+        try {
+            Message message = new Message(data);
+            MessageExecutor.execute(message);
+        } catch (Exception e) {
+            getLogger().warning(e.getMessage());
+        }
 
     }
 }
