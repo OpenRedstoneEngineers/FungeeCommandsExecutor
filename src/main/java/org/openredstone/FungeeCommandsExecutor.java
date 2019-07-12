@@ -1,14 +1,9 @@
 package org.openredstone;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.openredstone.messaging.Message;
-import org.openredstone.messaging.MessageExecutor;
+import org.openredstone.events.PluginMessageEvent;
 
-public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageListener {
+public class FungeeCommandsExecutor extends JavaPlugin {
 
     public static String channel = "fun:commands";
     public static String subChannel = "dispatcher";
@@ -25,7 +20,7 @@ public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageL
             return;
         }
 
-        getServer().getMessenger().registerIncomingPluginChannel( this, channel, this ); // we register the incoming channel
+        getServer().getMessenger().registerIncomingPluginChannel( this, channel, new PluginMessageEvent()); // we register the incoming channel
         getLogger().info("Dispatcher enabled successfully.");
     }
 
@@ -36,30 +31,6 @@ public class FungeeCommandsExecutor extends JavaPlugin implements PluginMessageL
             getLogger().severe("If the server is already hooked to BungeeCord, please enable it into your spigot.yml aswell.");
             getLogger().severe("Plugin disabled!");
             getServer().getPluginManager().disablePlugin(this);
-        }
-
-    }
-
-    @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
-        if (!channel.equalsIgnoreCase(channel)) {
-            return;
-        }
-
-        ByteArrayDataInput in = ByteStreams.newDataInput( bytes );
-        String subChannel = in.readUTF();
-
-        if (!subChannel.equalsIgnoreCase(subChannel)) {
-            return;
-        }
-
-        String data = in.readUTF();
-
-        try {
-            Message message = new Message(data);
-            MessageExecutor.execute(message);
-        } catch (Exception e) {
-            getLogger().warning(e.toString());
         }
 
     }
