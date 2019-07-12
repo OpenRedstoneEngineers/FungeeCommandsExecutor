@@ -30,13 +30,13 @@ public class Message {
 
         this.action = parseAction(raw);
 
-        if (action.equals(null)) {
+        if (action == null) {
             throw new Exception("Invalid action.");
         }
 
         this.uuid = parseUniqueId(raw);
 
-        if (uuid.equals(null)) {
+        if (uuid == null) {
             throw new Exception("Invalid UUID.");
         }
 
